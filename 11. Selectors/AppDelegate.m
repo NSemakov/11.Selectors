@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import <UIKit/UIKit.h>
 @interface AppDelegate ()
 
 @end
@@ -17,7 +17,28 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    //call selectors with more than 2 objects
+    SEL selector1=@selector(makeSomeTea:withSugar:andWater:);
+    NSMethodSignature* signature=[AppDelegate instanceMethodSignatureForSelector:selector1];
+    NSInvocation* invocation=[NSInvocation invocationWithMethodSignature:signature];
+    [invocation setTarget:self];
+    [invocation setSelector:selector1];
+    NSString* tea=@"Ceylon";
+    CGFloat spoon=2.5f;
+    CGFloat volume=0.7f;
+    CGFloat *p1=&spoon;
+    CGFloat *p2=&volume;
+    
+    [invocation setArgument:&tea atIndex:2];
+    [invocation setArgument:p1 atIndex:3];
+    [invocation setArgument:p2 atIndex:4];
+    [invocation invoke];
     return YES;
+}
+
+-(void) makeSomeTea:(NSString*) tea withSugar:(CGFloat) spoon andWater:(CGFloat) volume {
+    NSLog(@"You want %1.3f cup of %@ tea with %1.1f spoon of sugar",volume,tea,spoon);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
